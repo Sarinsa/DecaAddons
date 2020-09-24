@@ -18,8 +18,6 @@ public class DecaAddons extends JavaPlugin {
     public static FileConfiguration mainConfig;
     public static FileConfiguration playerProps;
 
-    public static NamespacedKey KEY_DECA;
-
     public static Economy economy;
 
     public static double guardianBaseCost;
@@ -29,7 +27,6 @@ public class DecaAddons extends JavaPlugin {
     @Override
     public void onEnable() {
         INSTANCE = this;
-        KEY_DECA = new NamespacedKey(INSTANCE, "deca");
 
         if (!setupEconomy()) {
             getLogger().severe("Disabled due to no Vault dependency found!");
