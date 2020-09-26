@@ -54,6 +54,7 @@ public class DAListener implements Listener {
     /**
      * Prevent fireballs and wither skulls from exploding when summoned by players
      * so that they can be ridden.
+     * @param event
      */
     @EventHandler
     public void entityExplodeEvent(ExplosionPrimeEvent event) {

@@ -35,9 +35,9 @@ public class DecaAddonsExecutor implements CommandExecutor {
             if (args[0].equalsIgnoreCase("help")) {
                 sender.sendMessage(FANCY_1);
 
-                for (Map<String, Object> map : commandMap.values()) {
+                commandMap.values().forEach(map -> {
                     sender.sendMessage(ChatColor.AQUA + (String)map.get("usage") + ChatColor.GRAY + " - " + ChatColor.YELLOW + map.get("description"));
-                }
+                });
                 sender.sendMessage(FANCY_2);
                 return true;
             }

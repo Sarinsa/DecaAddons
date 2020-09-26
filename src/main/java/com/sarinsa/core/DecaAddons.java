@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class DecaAddons extends JavaPlugin {
 
@@ -87,7 +88,6 @@ public class DecaAddons extends JavaPlugin {
             }
         }
         catch(UnknownDependencyException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -105,7 +105,7 @@ public class DecaAddons extends JavaPlugin {
             fileConfiguration.save(config);
         }
         catch (IOException e) {
-            getLogger().warning("Failed to save configuration file " + configFile);
+            getLogger().log(Level.WARNING, "Failed to save configuration file {0}", configFile);
         }
     }
 
@@ -116,7 +116,6 @@ public class DecaAddons extends JavaPlugin {
             }
         }
         catch(Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -126,7 +125,7 @@ public class DecaAddons extends JavaPlugin {
             File main = new File(getDataFolder(), "main.yml");
 
             if (!main.exists()) {
-                getLogger().info("Creating configuration: " + main.getName());
+                getLogger().log(Level.INFO, "Creating configuration: {0}", main.getName());
 
                 mainConfig = YamlConfiguration.loadConfiguration(main);
 
@@ -139,15 +138,14 @@ public class DecaAddons extends JavaPlugin {
             File playerProperties = new File(getDataFolder(), "playerProps.yml");
 
             if (!playerProperties.exists()) {
-                getLogger().info("Creating configuration: " + playerProperties.getName());
+                getLogger().log(Level.INFO, "Creating configuration: {0}", playerProperties.getName());
 
                 playerProps = YamlConfiguration.loadConfiguration(playerProperties);
                 playerProps.save(playerProperties);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             getLogger().severe("Failed to construct configuration files!");
             getLogger().severe("Sarinsa done goofed, huh? Welp, might as well blame gigo.");
-            e.printStackTrace();
         }
     }
 }

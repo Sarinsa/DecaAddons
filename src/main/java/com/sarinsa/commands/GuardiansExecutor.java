@@ -53,48 +53,43 @@ public class GuardiansExecutor implements CommandExecutor {
                 }
 
                 //Buying 1
-                if (args.length == 1) {
-
-                    if (money >= cost) {
-
-                        DecaAddons.economy.withdrawPlayer(player, cost);
-                        DecaAddons.playerProps.getConfigurationSection(player.getUniqueId().toString()).set("guardians", guardians + 1);
-                        DecaAddons.INSTANCE.saveConfiguraion("playerProps.yml", DecaAddons.playerProps);
-
-                        player.sendMessage(ChatColor.GREEN + "You purchased a Guardian.");
-                        return true;
-                    }
-                    else {
-                        player.sendMessage(ChatColor.RED + "You don't have sufficient funds " + ChatColor.BLUE + "(" + ChatColor.AQUA + DecaAddons.economy.format(cost) + ChatColor.BLUE + ")");
-                        return true;
-                    }
-                }
-
-                //Buying multiple
-                else if (args.length == 2) {
-
-                    if (Integer.valueOf(args[0]) == null) {
-
-                        int amount = Integer.valueOf(args[1]);
-                        cost *= amount;
-
+                switch (args.length) {
+                    case 1:
                         if (money >= cost) {
+                            
                             DecaAddons.economy.withdrawPlayer(player, cost);
-                            DecaAddons.playerProps.getConfigurationSection(player.getUniqueId().toString()).set("guardians", guardians + amount);
+                            DecaAddons.playerProps.getConfigurationSection(player.getUniqueId().toString()).set("guardians", guardians + 1);
                             DecaAddons.INSTANCE.saveConfiguraion("playerProps.yml", DecaAddons.playerProps);
-
-                            player.sendMessage(ChatColor.GREEN + "You purchased " + ChatColor.AQUA + amount + ChatColor.GREEN + " guardians");
+                            
+                            player.sendMessage(ChatColor.GREEN + "You purchased a Guardian.");
                             return true;
                         }
                         else {
                             player.sendMessage(ChatColor.RED + "You don't have sufficient funds " + ChatColor.BLUE + "(" + ChatColor.AQUA + DecaAddons.economy.format(cost) + ChatColor.BLUE + ")");
                             return true;
                         }
-                    }
-                }
-                else {
-                    player.sendMessage(References.TOO_MANY_ARGS);
-                    return true;
+                    case 2:
+                        if (Integer.valueOf(args[0]) == null) {
+                            
+                            int amount = Integer.valueOf(args[1]);
+                            cost *= amount;
+                            
+                            if (money >= cost) {
+                                DecaAddons.economy.withdrawPlayer(player, cost);
+                                DecaAddons.playerProps.getConfigurationSection(player.getUniqueId().toString()).set("guardians", guardians + amount);
+                                DecaAddons.INSTANCE.saveConfiguraion("playerProps.yml", DecaAddons.playerProps);
+                                
+                                player.sendMessage(ChatColor.GREEN + "You purchased " + ChatColor.AQUA + amount + ChatColor.GREEN + " guardians");
+                                return true;
+                            }
+                            else {
+                                player.sendMessage(ChatColor.RED + "You don't have sufficient funds " + ChatColor.BLUE + "(" + ChatColor.AQUA + DecaAddons.economy.format(cost) + ChatColor.BLUE + ")");
+                                return true;
+                            }
+                        }   break;
+                    default:
+                        player.sendMessage(References.TOO_MANY_ARGS);
+                        return true;
                 }
             }
             else if (args[0].equalsIgnoreCase("help")) {
