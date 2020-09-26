@@ -18,7 +18,7 @@ public class DecaAddonsExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        PluginDescriptionFile descFile = DecaAddons.instance.getDescription();
+        PluginDescriptionFile descFile = DecaAddons.INSTANCE.getDescription();
 
         if (args.length < 1) {
             sender.sendMessage(FANCY_1);

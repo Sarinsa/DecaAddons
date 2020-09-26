@@ -1,0 +1,67 @@
+name: DecaAddons
+version: 1.1.0
+description: "Some nifty features for Deca"
+api-version: 1.14
+author: Sarinsa
+main: com.sarinsa.core.DecaAddons
+depend: [Vault]
+
+commands:
+
+  ride:
+    description: "Ride any living entity close to you."
+    permission: "decaaddons.ride"
+    usage: "/ride [player]"
+
+  fireride:
+    description: "Ride a fireball in the direction you are looking."
+    permission: "decaaddons.fireride"
+    permission-message: "You are not allowed to ride balls made out of fire."
+    usage: "/fireride"
+
+  skullride:
+    description: "Ride a wither skull in the direction you are looking."
+    permission: "decaaddons.skullride"
+    permission-message: "You are not allowed to cruise the air currents while sitting on a skull."
+    usage: "/skullride"
+
+  guardians:
+    description: "Base command for guardians."
+    usage: "/guardians"
+
+  bottlexp:
+    description: "Store all your experience in one consumable bottle."
+    usage: "/bottlexp"
+
+  nopickup:
+    description: "Toggle item pickup."
+    usage: "/nopickup"
+
+  punch:
+    description: "Punch a friend into The End!"
+    permission: "decaaddons.punch"
+    permission-message: "It is rude to punch people."
+    usage: "/punch (player)"
+
+  fakejoin:
+    aliases: "fjoin"
+    description: "Broadcast a fake join message with the specified player."
+    permission: "decaaddons.fake"
+    permission-message: "omg ur so fake"
+    usage: "/fakejoin (player)"
+
+  fakeleave:
+    aliases: "fleave"
+    description: "Broadcast a fake leave message with the specified player"
+    permission: "decaaddons.fake"
+    permission-message: "omg ur so fake"
+    usage: "/fakeleave (player)"
+
+  decaaddons:
+    aliases: "da"
+    description: "Base command for DecaAddons related commands."
+    usage: "/decaaddons help|permissions"
+
+permissions:
+  decaaddons.permissions:
+    default: op
