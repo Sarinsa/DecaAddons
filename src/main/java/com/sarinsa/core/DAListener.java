@@ -74,10 +74,11 @@ public class DAListener implements Listener {
     }
 
     @EventHandler
+    @SuppressWarnings("all")
     public void onExpBottleConsumed(PlayerInteractEvent event) {
         ItemStack itemStack = event.getItem();
 
-        if (!itemStack.hasItemMeta())
+        if (itemStack != null && !itemStack.hasItemMeta())
             return;
 
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -131,7 +132,6 @@ public class DAListener implements Listener {
 
     private static void refreshConfigurations(String playerUUID) {
         if (!DecaAddons.playerProps.contains(playerUUID)) {
-
             DecaAddons.playerProps.createSection(playerUUID);
             DecaAddons.playerProps.getConfigurationSection(playerUUID).set("isGuardianActive", true);
             DecaAddons.playerProps.getConfigurationSection(playerUUID).set("guardians", 0);

@@ -25,14 +25,13 @@ public class DecaAddons extends JavaPlugin {
 
 
     @Override
+    @SuppressWarnings("all")
     public void onEnable() {
         INSTANCE = this;
 
         if (!setupEconomy()) {
-            getLogger().severe("Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
         }
-
         this.getServer().getPluginManager().registerEvents(new DAListener(), this);
 
         this.createDir();
@@ -56,30 +55,23 @@ public class DecaAddons extends JavaPlugin {
         guardianDonorCost = mainConfig.getDouble("guardian-donor-cost");
     }
 
-
-
-
     @Override
     public void onDisable() {
         saveConfiguraion("main.yml", mainConfig);
         saveConfiguraion("playerProps.yml", playerProps);
     }
 
-
-
     private boolean setupEconomy() {
-        try
-        {
-            RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        try {
+            RegisteredServiceProvider<Economy> serviceProvider = getServer().getServicesManager().getRegistration(Economy.class);
 
-            if (rsp == null) {
-                getLogger().info("No registered economy found! DecaAddons will not disable itself.");
+            if (serviceProvider == null) {
+                getLogger().info("No registered economy found! Disabling...");
                 return false;
             }
             else
             {
-                economy = rsp.getProvider();
-                getLogger().info("Economy successfully registered!");
+                economy = serviceProvider.getProvider();
                 return true;
             }
         }
@@ -109,7 +101,8 @@ public class DecaAddons extends JavaPlugin {
     private void createDir() {
         try {
             if (!getDataFolder().exists()) {
-                getDataFolder().mkdirs();
+                if (!getDataFolder().mkdirs())
+                    getLogger().warning("Failed to create config directory.");
             }
         }
         catch(Exception e) {
@@ -118,7 +111,6 @@ public class DecaAddons extends JavaPlugin {
     }
 
     private void createConfigurations() {
-
         try {
             File main = new File(getDataFolder(), "main.yml");
 
