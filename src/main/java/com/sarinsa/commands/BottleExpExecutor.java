@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.text.NumberFormat;
@@ -34,7 +33,9 @@ public class BottleExpExecutor implements CommandExecutor {
             return true;
         }
 
-        if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
+        //CHECK THIS CODE FOR POSSIBLE "Could not pass event PlayerInteractEvent" ERROR
+        //"&& player.getInventory().getItemInMainHand().getType() != null" was Added by monster to see if error gets fixed.
+        if (player.getInventory().getItemInMainHand().getType() != Material.AIR && player.getInventory().getItemInMainHand().getType() != null) {
             player.sendMessage(ChatColor.RED + "Your held itemstack must be empty.");
             player.getServer().getLogger().info(player.getInventory().getItemInMainHand().getType().name());
             return true;

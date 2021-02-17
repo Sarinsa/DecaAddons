@@ -59,7 +59,7 @@ public class GuardiansExecutor implements CommandExecutor {
 
                         DecaAddons.economy.withdrawPlayer(player, cost);
                         DecaAddons.playerProps.getConfigurationSection(player.getUniqueId().toString()).set("guardians", guardians + 1);
-                        DecaAddons.instance.saveConfiguraion("playerProps.yml", DecaAddons.playerProps);
+                        DecaAddons.INSTANCE.saveConfiguraion("playerProps.yml", DecaAddons.playerProps);
 
                         player.sendMessage(ChatColor.GREEN + "You purchased a Guardian.");
                         return true;
@@ -81,7 +81,7 @@ public class GuardiansExecutor implements CommandExecutor {
                         if (money >= cost) {
                             DecaAddons.economy.withdrawPlayer(player, cost);
                             DecaAddons.playerProps.getConfigurationSection(player.getUniqueId().toString()).set("guardians", guardians + amount);
-                            DecaAddons.instance.saveConfiguraion("playerProps.yml", DecaAddons.playerProps);
+                            DecaAddons.INSTANCE.saveConfiguraion("playerProps.yml", DecaAddons.playerProps);
 
                             player.sendMessage(ChatColor.GREEN + "You purchased " + ChatColor.AQUA + amount + ChatColor.GREEN + " guardians");
                             return true;
