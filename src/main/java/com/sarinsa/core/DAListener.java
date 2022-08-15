@@ -79,7 +79,7 @@ public class DAListener implements Listener {
     public void onExpBottleConsumed(PlayerInteractEvent event) {
         ItemStack itemStack = event.getItem();
 
-        if (itemStack != null && !itemStack.hasItemMeta())
+        if (itemStack == null || !itemStack.hasItemMeta())
             return;
 
         ItemMeta itemMeta = itemStack.getItemMeta();
