@@ -16,8 +16,8 @@ import java.util.logging.Level;
 public class DecaAddons extends JavaPlugin {
 
     public static DecaAddons INSTANCE;
-    public static FileConfiguration mainConfig;
-    public static FileConfiguration playerProps;
+    public static FileConfiguration CONFIG;
+    public static FileConfiguration PLAYER_PROPS;
 
     public static Economy economy;
 
@@ -49,17 +49,17 @@ public class DecaAddons extends JavaPlugin {
         this.getCommand("fakeleave").setExecutor(new FakeJoinLeaveExecutor());
         this.getCommand("decaaddons").setExecutor(new DecaAddonsExecutor());
 
-        mainConfig = getConfiguraion("main.yml");
-        playerProps = getConfiguraion("playerProps.yml");
+        CONFIG = getConfiguration("main.yml");
+        PLAYER_PROPS = getConfiguration("playerProps.yml");
 
-        guardianBaseCost = mainConfig.getDouble("guardian-cost");
-        guardianDonorCost = mainConfig.getDouble("guardian-donor-cost");
+        guardianBaseCost = CONFIG.getDouble("guardian-cost");
+        guardianDonorCost = CONFIG.getDouble("guardian-donor-cost");
     }
 
     @Override
     public void onDisable() {
-        saveConfiguraion("main.yml", mainConfig);
-        saveConfiguraion("playerProps.yml", playerProps);
+        saveConfiguration("main.yml", CONFIG);
+        saveConfiguration("playerProps.yml", PLAYER_PROPS);
     }
 
     private boolean setupEconomy() {
@@ -81,13 +81,12 @@ public class DecaAddons extends JavaPlugin {
         }
     }
 
-    public FileConfiguration getConfiguraion(String configFile) {
+    public FileConfiguration getConfiguration(String configFile) {
         File config = new File(getDataFolder(), configFile);
         return YamlConfiguration.loadConfiguration(config);
     }
 
-    public void saveConfiguraion(String configFile, FileConfiguration fileConfiguration) {
-
+    public void saveConfiguration(String configFile, FileConfiguration fileConfiguration) {
         File config = new File(getDataFolder(), configFile);
 
         try {
@@ -99,13 +98,9 @@ public class DecaAddons extends JavaPlugin {
     }
 
     private void createDir() {
-        try {
-            if (!getDataFolder().exists()) {
-                if (!getDataFolder().mkdirs())
-                    getLogger().warning("Failed to create config directory.");
-            }
-        }
-        catch(Exception e) {
+        if (!getDataFolder().exists()) {
+            if (!getDataFolder().mkdirs())
+                getLogger().warning("Failed to create config directory.");
         }
     }
 
@@ -116,23 +111,24 @@ public class DecaAddons extends JavaPlugin {
             if (!main.exists()) {
                 getLogger().log(Level.INFO, "Creating configuration: {0}", main.getName());
 
-                mainConfig = YamlConfiguration.loadConfiguration(main);
+                CONFIG = YamlConfiguration.loadConfiguration(main);
 
-                mainConfig.set("punch_world_name", "world_the_end");
-                mainConfig.set("guardian_cost_standard", "5000");
-                mainConfig.set("guardian_cost_donor", "3000");
+                CONFIG.set("punch_world_name", "world_the_end");
+                CONFIG.set("guardian_cost_standard", "5000");
+                CONFIG.set("guardian_cost_donor", "3000");
 
-                mainConfig.save(main);
+                CONFIG.save(main);
             }
             File playerProperties = new File(getDataFolder(), "playerProps.yml");
 
             if (!playerProperties.exists()) {
                 getLogger().log(Level.INFO, "Creating configuration: {0}", playerProperties.getName());
 
-                playerProps = YamlConfiguration.loadConfiguration(playerProperties);
-                playerProps.save(playerProperties);
+                PLAYER_PROPS = YamlConfiguration.loadConfiguration(playerProperties);
+                PLAYER_PROPS.save(playerProperties);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             getLogger().severe("Failed to construct configuration files!");
             getLogger().severe("Sarinsa done goofed, huh? Welp, might as well blame gigo.");
         }

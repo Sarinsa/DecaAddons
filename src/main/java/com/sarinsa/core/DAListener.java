@@ -25,19 +25,20 @@ import java.util.Objects;
 public class DAListener implements Listener {
 
 
-
+    /**
+     * Handles guardian stuff when a player dies.
+     */
     @EventHandler
+    @SuppressWarnings("all")
     public void guardianDeath(PlayerDeathEvent event) {
         String playerUUID = event.getEntity().getUniqueId().toString();
 
-        if (DecaAddons.playerProps.contains(playerUUID)) {
-
-            if (DecaAddons.playerProps.getConfigurationSection(playerUUID).getBoolean("isGuardianActive")) {
-
-                int guardians = DecaAddons.playerProps.getConfigurationSection(playerUUID).getInt("guardians");
+        if (DecaAddons.PLAYER_PROPS.contains(playerUUID)) {
+            if (DecaAddons.PLAYER_PROPS.getConfigurationSection(playerUUID).getBoolean("isGuardianActive")) {
+                int guardians = DecaAddons.PLAYER_PROPS.getConfigurationSection(playerUUID).getInt("guardians");
 
                 if (guardians > 0) {
-                    Objects.requireNonNull(DecaAddons.playerProps.getConfigurationSection(playerUUID)).set("guardians", guardians - 1);
+                    Objects.requireNonNull(DecaAddons.PLAYER_PROPS.getConfigurationSection(playerUUID)).set("guardians", --guardians);
                     event.getEntity().sendMessage(ChatColor.GREEN + "You used a guardian to protect your inventory!");
                     event.getEntity().sendMessage(ChatColor.YELLOW + "You now have " + ChatColor.AQUA + guardians + ChatColor.YELLOW + " guardian(s) left.");
                     event.setKeepInventory(true);
@@ -54,7 +55,6 @@ public class DAListener implements Listener {
     /**
      * Prevent fireballs and wither skulls from exploding when summoned by players
      * so that they can be ridden.
-     * @param event
      */
     @EventHandler
     public void entityExplodeEvent(ExplosionPrimeEvent event) {
@@ -74,6 +74,11 @@ public class DAListener implements Listener {
         }
     }
 
+    /**
+     * Checks if the player used an xp bottle
+     * that was created with /xpbottle and
+     * acts accordingly.
+     */
     @EventHandler
     @SuppressWarnings("all")
     public void onExpBottleConsumed(PlayerInteractEvent event) {
@@ -90,19 +95,22 @@ public class DAListener implements Listener {
         PersistentDataContainer dataContainer = itemMeta.getPersistentDataContainer();
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-
             if (dataContainer.has(NamespacedKey.minecraft("exp_bottle_value"), PersistentDataType.INTEGER)) {
                 int exp = dataContainer.getOrDefault(NamespacedKey.minecraft("exp_bottle_value"), PersistentDataType.INTEGER, 0);
 
                 event.getPlayer().giveExp(exp);
                 event.getPlayer().getInventory().setItemInMainHand(null);
                 event.getPlayer().updateInventory();
-                event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 0.5f);
+                event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
                 event.setCancelled(true);
             }
         }
     }
 
+    /**
+     * Removes fireballs and wither skull
+     * vehicles when they are dismounted
+     */
     @EventHandler
     public void onDismount(EntityDismountEvent event) {
         if (event.getDismounted().getType() == EntityType.WITHER_SKULL || event.getDismounted().getType() == EntityType.FIREBALL) {
@@ -110,10 +118,14 @@ public class DAListener implements Listener {
         }
     }
 
+    /**
+     * Creates a guardian config for the player
+     * logging in if they don't already have one.
+     */
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         String playerUUID = event.getPlayer().getUniqueId().toString();
-        refreshConfigurations(playerUUID);
+        createGuardianConfig(playerUUID);
     }
 
 
@@ -131,12 +143,13 @@ public class DAListener implements Listener {
     }
     */
 
-    private static void refreshConfigurations(String playerUUID) {
-        if (!DecaAddons.playerProps.contains(playerUUID)) {
-            DecaAddons.playerProps.createSection(playerUUID);
-            DecaAddons.playerProps.getConfigurationSection(playerUUID).set("isGuardianActive", true);
-            DecaAddons.playerProps.getConfigurationSection(playerUUID).set("guardians", 0);
-            DecaAddons.INSTANCE.saveConfiguraion("playerProps.yml", DecaAddons.playerProps);
+    @SuppressWarnings("all")
+    private static void createGuardianConfig(String playerUUID) {
+        if (!DecaAddons.PLAYER_PROPS.contains(playerUUID)) {
+            DecaAddons.PLAYER_PROPS.createSection(playerUUID);
+            DecaAddons.PLAYER_PROPS.getConfigurationSection(playerUUID).set("isGuardianActive", true);
+            DecaAddons.PLAYER_PROPS.getConfigurationSection(playerUUID).set("guardians", 0);
+            DecaAddons.INSTANCE.saveConfiguration("playerProps.yml", DecaAddons.PLAYER_PROPS);
         }
     }
 }
