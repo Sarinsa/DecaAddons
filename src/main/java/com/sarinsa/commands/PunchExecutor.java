@@ -3,7 +3,6 @@ package com.sarinsa.commands;
 import com.sarinsa.core.DecaAddons;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -35,7 +34,6 @@ public class PunchExecutor implements CommandExecutor {
         if (target != null) {
             String worldName = DecaAddons.CONFIG.getString("punch_world_name");
             String locString = DecaAddons.CONFIG.getString("punch_location");
-            String worldName = DecaAddons.CONFIG.getString("punch_world_name");
             if (worldName == null) {
                 player.sendMessage(ChatColor.RED + "World variable not set. Nag staff about this; preferably MoNsTeR_WhAt");
                 return true;

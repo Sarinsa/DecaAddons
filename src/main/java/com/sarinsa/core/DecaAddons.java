@@ -2,7 +2,6 @@ package com.sarinsa.core;
 
 import com.sarinsa.commands.*;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
