@@ -9,12 +9,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class GuardiansExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
-        int guardians = DecaAddons.PLAYER_PROPS.getConfigurationSection(player.getUniqueId().toString()).getInt("guardians");
+        int guardians = Objects.requireNonNull(DecaAddons.PLAYER_PROPS.getConfigurationSection(player.getUniqueId().toString())).getInt("guardians");
 
         String status = ChatColor.RED + "OFF";
 
@@ -37,7 +39,7 @@ public class GuardiansExecutor implements CommandExecutor {
                 if (args.length == 1) {
                     if (money >= cost) {
                         DecaAddons.economy.withdrawPlayer(player, cost);
-                        DecaAddons.PLAYER_PROPS.getConfigurationSection(player.getUniqueId().toString()).set("guardians", ++guardians);
+                        Objects.requireNonNull(DecaAddons.PLAYER_PROPS.getConfigurationSection(player.getUniqueId().toString())).set("guardians", ++guardians);
                         DecaAddons.INSTANCE.saveConfiguration("playerProps.yml", DecaAddons.PLAYER_PROPS);
 
                         player.sendMessage(ChatColor.GREEN + "You purchased a Guardian.");
@@ -50,8 +52,11 @@ public class GuardiansExecutor implements CommandExecutor {
 
                 //Buying multiple
                 else if (args.length == 2) {
+                    if (!args[1].matches("\\d+")) {
+                        player.sendMessage(ChatColor.RED + "\"" + args[1] + "\" is not a valid number.");
+                        return true;
+                    }
                     int amount;
-
                     try {
                         amount = Integer.parseInt(args[1]);
                     }
@@ -68,7 +73,7 @@ public class GuardiansExecutor implements CommandExecutor {
 
                     if (money >= cost) {
                         DecaAddons.economy.withdrawPlayer(player, cost);
-                        DecaAddons.PLAYER_PROPS.getConfigurationSection(player.getUniqueId().toString()).set("guardians", guardians + amount);
+                        Objects.requireNonNull(DecaAddons.PLAYER_PROPS.getConfigurationSection(player.getUniqueId().toString())).set("guardians", guardians + amount);
                         DecaAddons.INSTANCE.saveConfiguration("playerProps.yml", DecaAddons.PLAYER_PROPS);
 
                         player.sendMessage(ChatColor.GREEN + "You purchased " + ChatColor.AQUA + amount + ChatColor.GREEN + " guardians");
