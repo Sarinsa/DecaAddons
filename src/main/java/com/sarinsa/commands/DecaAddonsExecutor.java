@@ -15,9 +15,9 @@ public class DecaAddonsExecutor implements CommandExecutor {
     private final String FANCY_1 = ChatColor.GRAY + "----------[" + ChatColor.AQUA + "" + ChatColor.ITALIC + "DecaAddons" + ChatColor.GRAY + "]----------";
     private final String FANCY_2 = ChatColor.GRAY + "--------------------------------";
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
         PluginDescriptionFile descFile = DecaAddons.INSTANCE.getDescription();
 
         if (args.length < 1) {
@@ -45,7 +45,7 @@ public class DecaAddonsExecutor implements CommandExecutor {
                 if (sender.hasPermission("decaaddons.permissions")) {
 
                     String[] labels = commandMap.keySet().toArray(new String[0]);
-                    int loopRun = 0;
+                    int index = 0;
 
                     sender.sendMessage(ChatColor.GREEN + "Commands and permissions associated with DecaAddons:");
 
@@ -55,8 +55,8 @@ public class DecaAddonsExecutor implements CommandExecutor {
                         if (map.get("permission") == null || map.get("permission").equals("null"))
 
                             permission = ChatColor.GRAY + "No permission";
-                        sender.sendMessage(ChatColor.AQUA + "/" + labels[loopRun] + ChatColor.GRAY + " - " + ChatColor.YELLOW + permission);
-                        loopRun += 1;
+                        sender.sendMessage(ChatColor.AQUA + "/" + labels[index] + ChatColor.GRAY + " - " + ChatColor.YELLOW + permission);
+                        index += 1;
                     }
                     return true;
                 }

@@ -19,6 +19,9 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
+    maven {
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
     flatDir {
         // For dependencies that are not hosted
         // on any servers and needs to be downloaded
@@ -28,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
+    compileOnly "io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 }
 

@@ -70,8 +70,7 @@ public class DecaAddons extends JavaPlugin {
                 getLogger().info("No registered economy found! Disabling...");
                 return false;
             }
-            else
-            {
+            else {
                 economy = serviceProvider.getProvider();
                 return true;
             }
@@ -88,6 +87,10 @@ public class DecaAddons extends JavaPlugin {
 
     public void saveConfiguration(String configFile, FileConfiguration fileConfiguration) {
         File config = new File(getDataFolder(), configFile);
+
+        if (fileConfiguration == null) {
+            throw new IllegalStateException("Tried saving a null config instance. File: " + configFile);
+        }
 
         try {
             fileConfiguration.save(config);
@@ -114,6 +117,7 @@ public class DecaAddons extends JavaPlugin {
                 CONFIG = YamlConfiguration.loadConfiguration(main);
 
                 CONFIG.set("punch_world_name", "world_the_end");
+                CONFIG.set("punch_location", "0,0,0");
                 CONFIG.set("guardian_cost_standard", "5000");
                 CONFIG.set("guardian_cost_donor", "3000");
 

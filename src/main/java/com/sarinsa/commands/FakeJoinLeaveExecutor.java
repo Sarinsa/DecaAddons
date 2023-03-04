@@ -12,11 +12,10 @@ public class FakeJoinLeaveExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(References.PLAYER_ONLY);
             return true;
         }
-        Player player = (Player) sender;
 
         if (cmd.getName().equals("fakejoin")) {
             if (args.length != 1) {

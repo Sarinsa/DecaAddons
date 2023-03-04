@@ -1,7 +1,7 @@
 name: DecaAddons
-version: 1.1.0
+version: 2.0.0
 description: "Some nifty features for Deca"
-api-version: 1.14
+api-version: 1.19
 author: Sarinsa
 main: com.sarinsa.core.DecaAddons
 depend: [Vault]

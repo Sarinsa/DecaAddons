@@ -15,17 +15,14 @@ public class ProjectileRideExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(References.PLAYER_ONLY);
             return true;
         }
-
         if (args.length > 0) {
             sender.sendMessage(References.TOO_MANY_ARGS);
             return true;
         }
-
-        Player player = (Player) sender;
         Location location = player.getLocation();
         location.setY(location.getY() + 0.3);
 
@@ -35,7 +32,6 @@ public class ProjectileRideExecutor implements CommandExecutor {
 
             Fireball fireball = (Fireball) player.getWorld().spawnEntity(location, EntityType.FIREBALL);
             fireball.setShooter(player);
-            fireball.setBounce(true);
             fireball.addPassenger(player);
 
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GHAST_SHOOT, 1f, 1f);
@@ -45,7 +41,6 @@ public class ProjectileRideExecutor implements CommandExecutor {
             WitherSkull witherSkull = (WitherSkull) player.getWorld().spawnEntity(location, EntityType.WITHER_SKULL);
             witherSkull.setShooter(player);
             witherSkull.setCharged(true);
-            witherSkull.setBounce(true);
             witherSkull.addPassenger(player);
 
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SHOOT, 1f, 1f);
