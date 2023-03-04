@@ -33,6 +33,7 @@ public class DecaAddons extends JavaPlugin {
         if (!setupEconomy()) {
             getServer().getPluginManager().disablePlugin(this);
         }
+
         this.getServer().getPluginManager().registerEvents(new DAListener(), this);
 
         this.createDir();
@@ -86,11 +87,12 @@ public class DecaAddons extends JavaPlugin {
     }
 
     public void saveConfiguration(String configFile, FileConfiguration fileConfiguration) {
-        File config = new File(getDataFolder(), configFile);
-
         if (fileConfiguration == null) {
-            throw new IllegalStateException("Tried saving a null config instance. File: " + configFile);
+            getLogger().warning("Attempted to save null configuration: " + configFile);
+            return;
         }
+
+        File config = new File(getDataFolder(), configFile);
 
         try {
             fileConfiguration.save(config);

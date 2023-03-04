@@ -10,6 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.sarinsa.util.References;
 
+import java.util.Objects;
+
 public class PunchExecutor implements CommandExecutor {
 
     // TODO - Sending people to the end is potentially dangerous; consider a special "spawn point"
@@ -33,7 +35,6 @@ public class PunchExecutor implements CommandExecutor {
         if (target != null) {
             String worldName = DecaAddons.CONFIG.getString("punch_world_name");
             String locString = DecaAddons.CONFIG.getString("punch_location");
-
             if (worldName == null) {
                 player.sendMessage(ChatColor.RED + "World variable not set. Nag staff about this; preferably MoNsTeR_WhAt");
                 return true;
@@ -42,7 +43,7 @@ public class PunchExecutor implements CommandExecutor {
                 player.sendMessage(ChatColor.RED + "Could not find the \"punch world\". Contact staff!");
                 return true;
             }
-            target.teleport(Bukkit.getServer().getWorld(worldName).getSpawnLocation());
+            target.teleport(Objects.requireNonNull(Bukkit.getServer().getWorld(worldName)).getSpawnLocation());
             String name = target.getName();
 
             if (target.getName().equals(player.getName())) {
