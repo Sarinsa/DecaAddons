@@ -12,27 +12,23 @@ public class NoPickupExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(References.PLAYER_ONLY);
             return true;
         }
-
-        Player player = (Player) sender;
-
         if (args.length > 0) {
             player.sendMessage(References.TOO_MANY_ARGS);
             return true;
         }
-        if (player.getCanPickupItems()) {
-            player.setCanPickupItems(false);
+        boolean canPickupItems = player.getCanPickupItems();
+
+        if (canPickupItems) {
             player.sendMessage(ChatColor.YELLOW + "NoPickup " + ChatColor.GREEN + "enabled");
-            return true;
         }
         else {
-            player.setCanPickupItems(true);
-            player.sendMessage(ChatColor.YELLOW + "NoPickup " + ChatColor.RED + "disable");
-            return true;
+            player.sendMessage(ChatColor.YELLOW + "NoPickup " + ChatColor.RED + "disabled");
         }
+        player.setCanPickupItems(!canPickupItems);
+        return true;
     }
 }

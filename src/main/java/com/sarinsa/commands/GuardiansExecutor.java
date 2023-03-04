@@ -21,7 +21,6 @@ public class GuardiansExecutor implements CommandExecutor {
         if (Utility.isGuardianActive(player)) {
             status = ChatColor.GREEN + "ON";
         }
-
         if (args.length < 1) {
             player.sendMessage(ChatColor.AQUA + "You currently have " + ChatColor.GREEN + guardians + ChatColor.AQUA + " Guardians. " + ChatColor.GRAY + "(" + ChatColor.YELLOW + "Guardians are " + status + ChatColor.GRAY + ")");
             player.sendMessage(ChatColor.GRAY + "Pssst. Check out the list of guardian related commands with");
@@ -94,13 +93,12 @@ public class GuardiansExecutor implements CommandExecutor {
                 if (Utility.isGuardianActive(player)) {
                     Utility.setGuardianActive(player, false);
                     player.sendMessage(ChatColor.YELLOW + "Toggled Guardians " + ChatColor.RED + "" + ChatColor.BOLD + "OFF");
-                    return true;
                 }
                 else {
                     Utility.setGuardianActive(player, true);
                     player.sendMessage(ChatColor.YELLOW + "Toggled Guardians " + ChatColor.GREEN + "" + ChatColor.BOLD + "ON");
-                    return true;
                 }
+                return true;
             }
             else {
                 player.sendMessage(ChatColor.RED + "Invalid subcommand. Type /guardians help for a list of commands");

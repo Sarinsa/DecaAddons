@@ -1,6 +1,8 @@
 package com.sarinsa.core;
 
+import com.sarinsa.util.Utility;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
@@ -42,6 +44,8 @@ public class DAListener implements Listener {
                     event.getEntity().sendMessage(ChatColor.GREEN + "You used a guardian to protect your inventory!");
                     event.getEntity().sendMessage(ChatColor.YELLOW + "You now have " + ChatColor.AQUA + guardians + ChatColor.YELLOW + " guardian(s) left.");
                     event.setKeepInventory(true);
+                    // Must be done manually to make the inventory not drop. Items will be duped if not.
+                    event.getDrops().clear();
                     event.setKeepLevel(true);
                 }
                 else {
@@ -96,12 +100,14 @@ public class DAListener implements Listener {
 
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (dataContainer.has(NamespacedKey.minecraft("exp_bottle_value"), PersistentDataType.INTEGER)) {
-                int exp = dataContainer.getOrDefault(NamespacedKey.minecraft("exp_bottle_value"), PersistentDataType.INTEGER, 0);
+                int storedExp = dataContainer.getOrDefault(NamespacedKey.minecraft("exp_bottle_value"), PersistentDataType.INTEGER, 0);
+                int currentExp = Utility.getExpFromLevels(event.getPlayer(), false);
 
-                event.getPlayer().giveExp(exp);
-                event.getPlayer().getInventory().setItemInMainHand(null);
-                event.getPlayer().updateInventory();
-                event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
+                Player player = event.getPlayer();
+
+                player.setLevel(Utility.getLevelsFromExp(storedExp + currentExp));
+                player.getInventory().setItem(event.getHand(), null);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 0.5F);
                 event.setCancelled(true);
             }
         }
@@ -127,21 +133,6 @@ public class DAListener implements Listener {
         String playerUUID = event.getPlayer().getUniqueId().toString();
         createGuardianConfig(playerUUID);
     }
-
-
-    /*
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onItemPickup(PlayerPickupItemEvent event) {
-
-        //if (event.getEntity() instanceof Player) {
-
-            if (DecaAddons.nopickupMap.containsKey(event.getPlayer().getName())) {
-
-                event.setCancelled(true);
-            }
-        //}
-    }
-    */
 
     @SuppressWarnings("all")
     private static void createGuardianConfig(String playerUUID) {
